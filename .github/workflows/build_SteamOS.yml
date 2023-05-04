@@ -30,13 +30,15 @@ jobs:
           pacman -S sudo flatpak flatpak-builder --noconfirm
           sudo pacman -Syu --noconfirm
           sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs --noconfirm
+          flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
           cd OpenHD
           sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
           git config --global --add safe.directory /__w/OpenHD/OpenHD
           sudo bash build_cmake.sh
-          flatpak-builder --init openhd org.openhdfpv.openhd.json
-          flatpak-builder --force-clean --ccache --require-changes --repo=repo openhd org.openhdfpv.openhd.json
-      
+          ls -a build
+          cp ../additionalFiles/org.flatpak.openhd.yml build/
+          flatpak-builder build org.flatpak.openhd.yml
+
       - name: Upload to Github
         uses: 'actions/upload-artifact@v2'
         with:

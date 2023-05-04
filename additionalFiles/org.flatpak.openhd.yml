@@ -1,0 +1,13 @@
+app-id: org.flatpak.openhd
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+command: openhd
+modules:
+  - name: openhd
+    buildsystem: simple
+    build-commands:
+      - install -D openhd /app/bin/openhd
+    sources:
+      - type: file
+        path: openhd
