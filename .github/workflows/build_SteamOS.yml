@@ -27,7 +27,7 @@ jobs:
           submodules: recursive
       - name: Building OpenHD in Docker
         run: |
-          pacman -S sudo --noconfirm
+          pacman -S sudo flatpak --noconfirm
           sudo pacman -Syu --noconfirm
           flatpak remote-info --sdk flathub org.freedesktop.Sdk
           sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs --noconfirm
