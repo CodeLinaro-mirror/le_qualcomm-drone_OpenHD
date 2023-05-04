@@ -27,4 +27,6 @@ jobs:
           submodules: recursive
       - name: Building OpenHD in CHROOT
         run: |
-          echo "hello world"
+          sudo pacman -Syu
+          sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs 
+          ls -a
