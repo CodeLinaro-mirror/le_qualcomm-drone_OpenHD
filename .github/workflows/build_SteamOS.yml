@@ -8,6 +8,8 @@ jobs:
   build:
     #runs-on: ubuntu-18.04
     runs-on: ubuntu-22.04
+    container:
+      image: ianburgwin/steamos
     env:
       CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
     steps:
@@ -22,13 +24,4 @@ jobs:
           submodules: recursive
       - name: Building OpenHD in CHROOT
         run: |
-          git clone https://github.com/OpenHD/ChrootCompilationTest /opt/ChrootCompilationTest
-          mkdir -p /opt/ChrootCompilationTest/additionalFiles
-          git clone https://github.com/OpenHD/OpenHD -b 2.3-evo /opt/ChrootCompilationTest/additionalFiles/ --recursive
-          echo $CLOUDSMITH_API_KEY > /opt/ChrootCompilationTest/additionalFiles/cloudsmith_api_key.txt
-          echo "arch" > /opt/ChrootCompilationTest/additionalFiles/distro.txt
-          echo "steamos" > /opt/ChrootCompilationTest/additionalFiles/flavor.txt
-          cd /opt/ChrootCompilationTest/
-          sudo apt update
-          sudo bash install_dep.sh
-          sudo bash build.sh steamos $API_KEY arch steamos
+          echo "hello world"
