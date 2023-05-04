@@ -29,7 +29,7 @@ jobs:
         run: |
           pacman -S sudo flatpak --noconfirm
           sudo pacman -Syu --noconfirm
-          flatpak install flathub org.freedesktop.Sdk
+          flatpak install -y flathub org.freedesktop.Sdk//org.freedesktop.Sdk/x86_64/22.08
           sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs --noconfirm
           cd OpenHD
           sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
