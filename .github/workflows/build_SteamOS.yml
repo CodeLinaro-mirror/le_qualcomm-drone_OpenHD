@@ -31,4 +31,4 @@ jobs:
           cd /opt/ChrootCompilationTest/
           sudo apt update
           sudo bash install_dep.sh
-          sudo bash build.sh rock5 $API_KEY arch steamos
+          sudo bash build.sh steamos $API_KEY arch steamos
