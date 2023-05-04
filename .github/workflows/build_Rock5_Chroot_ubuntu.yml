@@ -1,7 +1,8 @@
 name: build_package_rock5_ubuntu
 
-on: 
+on:
   push:
+    branches: ["2.3-evo"]
     paths-ignore:
       - '**.yml'
       - '**.md'
@@ -9,7 +10,7 @@ on:
       - '**.adoc'
       - '.gitignore'
       - 'LICENSE'
-
+      
 jobs:
   build:
     #runs-on: ubuntu-18.04
