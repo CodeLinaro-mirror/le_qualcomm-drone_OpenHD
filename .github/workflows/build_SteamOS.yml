@@ -29,8 +29,8 @@ jobs:
         run: |
           pacman -S sudo flatpak flatpak-builder --noconfirm
           sudo pacman -Syu --noconfirm
-          sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs --noconfirm
-          flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
+          sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l base-devel autoconf automake libtool python-pip cmake gst-plugins-base boost boost-libs --noconfirm
+          flatpak install -y flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
           cd OpenHD
           sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
           git config --global --add safe.directory /__w/OpenHD/OpenHD
