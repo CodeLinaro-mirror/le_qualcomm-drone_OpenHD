@@ -31,4 +31,6 @@ jobs:
           sudo pacman -Syu --noconfirm
           sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l git base-devel autoconf automake libtool python-pip ruby cmake gst-plugins-base boost boost-libs --noconfirm
           cd OpenHD
+          sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
+          git config --global --add safe.directory /__w/OpenHD/OpenHD
           sudo bash build_cmake.sh
