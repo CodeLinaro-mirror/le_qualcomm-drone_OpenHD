@@ -38,9 +38,9 @@ jobs:
           flatpak-builder --force-clean --ccache --require-changes --repo=repo openhd org.openhdfpv.openhd.json
       
       - name: Upload to Github
-      uses: 'actions/upload-artifact@v2'
-      with:
-        name: "OpenHD"
-        path: |
-          OpenHD/*
-        if-no-files-found: error
+        uses: 'actions/upload-artifact@v2'
+        with:
+          name: "OpenHD"
+          path: |
+            OpenHD/*
+          if-no-files-found: error
