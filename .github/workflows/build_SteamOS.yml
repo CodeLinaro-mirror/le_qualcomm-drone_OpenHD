@@ -37,7 +37,9 @@ jobs:
           git config --global --add safe.directory /__w/OpenHD/OpenHD
           sudo bash build_cmake.sh
           cp org.flatpak.openhd.yml build/
-          flatpak-builder build org.flatpak.openhd.yml
+          cd build
+          mkdir package
+          flatpak-builder pakage org.flatpak.openhd.yml
 
       - name: Upload to Github
         uses: 'actions/upload-artifact@v2'
