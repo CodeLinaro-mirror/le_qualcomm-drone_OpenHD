@@ -30,18 +30,17 @@ jobs:
           cp additionalFiles/org.flatpak.openhd.yml OpenHD/
           pacman -S sudo flatpak flatpak-builder --noconfirm
           sudo pacman -Syu --noconfirm
-          #sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l base-devel autoconf automake libtool python-pip cmake gst-plugins-base boost boost-libs --noconfirm
+          sudo pacman -S libusb libpcap libsodium libnl sdl2 libv4l base-devel autoconf automake libtool python-pip cmake gst-plugins-base boost boost-libs --noconfirm
           flatpak install -y flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
           cd OpenHD
           sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
           git config --global --add safe.directory /__w/OpenHD/OpenHD
-          #sudo bash build_cmake.sh
+          sudo bash build_cmake.sh
           mkdir build
           touch build/openhd
           cp org.flatpak.openhd.yml build/
           cd build
-          mkdir package
-          flatpak list --runtime
+          ls -a
           flatpak-builder package org.flatpak.openhd.yml
 
       - name: Upload to Github
