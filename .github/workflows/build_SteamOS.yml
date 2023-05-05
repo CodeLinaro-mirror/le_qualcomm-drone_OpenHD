@@ -39,8 +39,8 @@ jobs:
           cp org.flatpak.openhd.yml build/
           cd build
           mkdir package
-          flatpak build-init
-          flatpak-builder pakage org.flatpak.openhd.yml
+          flatpak build-init --runtime=org.freedesktop.Platform package
+          flatpak-builder package org.flatpak.openhd.yml
 
       - name: Upload to Github
         uses: 'actions/upload-artifact@v2'
