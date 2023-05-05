@@ -36,8 +36,6 @@ jobs:
           sudo git config --global --add safe.directory /__w/OpenHD/OpenHD
           git config --global --add safe.directory /__w/OpenHD/OpenHD
           sudo bash build_cmake.sh
-          mkdir build
-          touch build/openhd
           cp org.flatpak.openhd.yml build/
           cd build
           ls -a
