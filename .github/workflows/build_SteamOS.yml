@@ -39,6 +39,7 @@ jobs:
           cp org.flatpak.openhd.yml build/
           cd build
           ls -a
+          flatpak build-init
           flatpak-builder package org.flatpak.openhd.yml
 
       - name: Upload to Github
