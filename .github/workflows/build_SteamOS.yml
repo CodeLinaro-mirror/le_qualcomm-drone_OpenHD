@@ -39,6 +39,7 @@ jobs:
           cp org.flatpak.openhd.yml build/
           cd build
           mkdir package
+          flatpak build-init --runtime=org.freedesktop.Platform//22.08 package
           flatpak-builder package org.flatpak.openhd.yml
 
       - name: Upload to Github
