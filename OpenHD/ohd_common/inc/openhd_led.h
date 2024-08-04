@@ -1,4 +1,5 @@
 // Created by consti10 on 01.02.24.
+// Refactored and improved Rapael 04.08.24
 //
 
 #ifndef OPENHD_OPENHD_LED_H
@@ -14,7 +15,7 @@
 namespace openhd {
 
 /**
- * OpenHD uses 2 LEDs (green and red) for displaying 'stuff' to the user.
+ * OpenHD uses 2 LEDs (primary and secondary) for displaying 'stuff' to the user.
  * Whether those LEDs exist or not depends on the HW - here we abstract that
  * away.
  */

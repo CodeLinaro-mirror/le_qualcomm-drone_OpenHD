@@ -1,6 +1,3 @@
-// Created by consti10 on 01.02.24.
-//
-
 #include "openhd_led.h"
 
 #include <chrono>
@@ -125,14 +122,46 @@ namespace openhd {
     }
 
     void LEDManager::set_rgb_led_status(int status, int color) {
-        bool on = status != STATUS_ON;
-        if (OHDPlatform::instance().is_rpi()) {
-            set_led_status(on, rpi::toggle_secondary_led);
-        } else if (OHDPlatform::instance().is_zero3w()) {
-            set_led_status(on, zero3w::toggle_secondary_led);
-        } else if (OHDPlatform::instance().is_radxa_cm3()) {
-            set_led_status(on, radxacm3::toggle_secondary_led);
+        // List of colors and their corresponding numbers:
+        // 0 - Red
+        // 1 - Green
+        // 2 - Blue
+        // 3 - Cyan
+        // 4 - Magenta
+        // 5 - Yellow
+        // 6 - White
+        // 7 - Black
+
+        std::string colorName;
+
+        if (color == 0) {
+            colorName = "Red";
+            r = 1; g = 0; b = 0;
+        } else if (color == 1) {
+            colorName = "Green";
+            r = 0; g = 1; b = 0;
+        } else if (color == 2) {
+            colorName = "Blue";
+            r = 0; g = 0; b = 1;
+        } else if (color == 3) {
+            colorName = "Cyan";
+            r = 0; g = 1; b = 1;
+        } else if (color == 4) {
+            colorName = "Magenta";
+            r = 1; g = 0; b = 1;
+        } else if (color == 5) {
+            colorName = "Yellow";
+            r = 1; g = 1; b = 0;
+        } else if (color == 6) {
+            colorName = "White";
+            r = 1; g = 1; b = 1;
+        } else if (color == 7) {
+            colorName = "Black";
+            r = 0; g = 0; b = 0;
+        } else {
+            colorName = "Unknown";
         }
+
     }
 
     void LEDManager::set_secondary_led_status(int status) {
@@ -157,6 +186,58 @@ namespace openhd {
         }
     }
 
+    void LEDManager::blink_led(bool primary, std::chrono::milliseconds on_duration, std::chrono::milliseconds off_duration, int blink_count) {
+        auto toggle_fn = primary
+            ? (OHDPlatform::instance().is_rpi() ? rpi::toggle_primary_led
+            : (OHDPlatform::instance().is_zero3w() ? zero3w::toggle_primary_led
+            : radxacm3::toggle_primary_led))
+            : (OHDPlatform::instance().is_rpi() ? rpi::toggle_secondary_led
+            : (OHDPlatform::instance().is_zero3w() ? zero3w::toggle_secondary_led
+            : radxacm3::toggle_secondary_led));
+        
+        for (int i = 0; i < blink_count; ++i) {
+            toggle_fn(true);
+            std::this_thread::sleep_for(on_duration);
+            toggle_fn(false);
+            std::this_thread::sleep_for(off_duration);
+        }
+    }
+
+    void LEDManager::set_status_loading() {
+        // Keep secondary LED on
+        set_secondary_led_status(STATUS_ON);
+
+        // SOS Pattern: ... --- ...
+        // Short flash = 250 ms on + 250 ms off
+        // Long flash = 750 ms on + 250 ms off
+        std::chrono::milliseconds short_flash_on(250);
+        std::chrono::milliseconds short_flash_off(250);
+        std::chrono::milliseconds long_flash_on(750);
+        std::chrono::milliseconds long_flash_off(250);
+
+        // SOS Pattern
+        for (int i = 0; i < 3; ++i) { // 3 short flashes
+            blink_led(true, short_flash_on, short_flash_off, 1);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(750)); // Pause between letters
+        for (int i = 0; i < 3; ++i) { // 3 long flashes
+            blink_led(true, long_flash_on, long_flash_off, 1);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(750)); // Pause between letters
+        for (int i = 0; i < 3; ++i) { // 3 short flashes
+            blink_led(true, short_flash_on, short_flash_off, 1);
+        }
+
+        // Optionally, you can include a longer pause after the SOS pattern
+        // std::this_thread::sleep_for(std::chrono::seconds(5));
+    }
+
+    void LEDManager::set_status_error() {
+        set_primary_led_status(STATUS_ON);
+        set_secondary_led_status(STATUS_ON);
+        m_has_error = true;
+    }
+
     LEDManager::LEDManager() {
     }
 
@@ -170,17 +251,5 @@ namespace openhd {
         std::string baseDir = "/sys/class/leds/";
         auto folders = listLedFoldersWithBrightness(baseDir);
         turnOnAllLeds(folders, baseDir);
-    }
-
-    void LEDManager::set_status_loading() {
-        std::string baseDir = "/sys/class/leds/";
-        auto folders = listLedFoldersWithBrightness(baseDir);
-        turnOffAllLeds(folders, baseDir);
-    }
-
-    void LEDManager::set_status_error() {
-        set_primary_led_status(STATUS_ON);
-        set_secondary_led_status(STATUS_ON);
-        m_has_error = true;
     }
 }
