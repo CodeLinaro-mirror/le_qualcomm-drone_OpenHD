@@ -147,7 +147,6 @@ void openhd::debug_config(const openhd::Config& config) {
   logger->debug("WIFI_WIFI_HOTSPOT_CARD: {}", config.WIFI_WIFI_HOTSPOT_CARD);
   logger->debug("WIFI_LOCAL_NETWORK_SSID: {}", config.WIFI_LOCAL_NETWORK_SSID);
   logger->debug("WIFI_LOCAL_NETWORK_PASSWORD: {}", config.WIFI_LOCAL_NETWORK_PASSWORD);
-  // Add more fields as needed for debugging...
 }
 
 void openhd::debug_config() {
