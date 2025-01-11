@@ -83,8 +83,8 @@ void debug_config();
 // Control ethernet via mavlink & Network manager - only on rpi by default,
 // otherwise card needs to be manually specified
 bool nw_ethernet_card_manual_active(const Config& config);
-std::shared_ptr<spdlog::logger> m_console;
 
 }  // namespace openhd
+std::shared_ptr<spdlog::logger> m_console;
 
 #endif  // OPENHD_OPENHD_OHD_COMMON_INC_OPENHD_CONFIG_H_
