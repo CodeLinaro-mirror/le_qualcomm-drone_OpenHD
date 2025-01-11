@@ -35,7 +35,7 @@
 namespace openhd::video {
 
 // TODO what about the following:
-// During streaming, we record to a file in /home/openhd/Videos/tmp with a
+// During streaming, we record to a file in /home/openhd/Videos/ramdisk with a
 // container that supports playback even when the streaming fails unexpectedly.
 // Once we are done writing to this file (for example, camera is stopped
 // properly) we demux it into a more commonly used format (e.g. from .mkv to

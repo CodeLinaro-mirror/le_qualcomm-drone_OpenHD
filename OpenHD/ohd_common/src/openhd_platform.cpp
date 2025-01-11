@@ -178,7 +178,7 @@ static int internal_discover_platform() {
 
 static void write_platform_manifest(const OHDPlatform& ohdPlatform) {
   static constexpr auto PLATFORM_MANIFEST_FILENAME =
-      "/tmp/platform_manifest.txt";
+      "/ramdisk/platform_manifest.txt";
   OHDFilesystemUtil::write_file(PLATFORM_MANIFEST_FILENAME,
                                 ohdPlatform.to_string());
 }

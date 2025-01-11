@@ -44,7 +44,7 @@ namespace openhd::onboard::rpi {
 // rpi this way.
 static int readUnderVoltError() {
   auto undervolt_opt =
-      OHDFilesystemUtil::opt_read_file("/tmp/undervolt", false);
+      OHDFilesystemUtil::opt_read_file("/ramdisk/undervolt", false);
   if (!undervolt_opt.has_value()) return 0;
   auto value = OHDUtil::string_to_int(undervolt_opt.value());
   ;

@@ -7,7 +7,7 @@ The responsibilities of this module depend on weather it us used on air or groun
    This data is forwarded via a callback (previously udp port) to ohd_interface for transmission via wb
 3) Store and change camera/encoder-related settings
    Camera settings are stored in SETTINGS_BASE_PATH/video (one unique file for each camera)
-   The Camera manifest (list of discovered cameras) can be found under /tmp/camera_manifest for debugging.
+   The Camera manifest (list of discovered cameras) can be found under /ramdisk/camera_manifest for debugging.
 
 # Ground
 1) Forward the received video data via RTP, UDP to other consuming applications 

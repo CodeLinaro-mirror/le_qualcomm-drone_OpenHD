@@ -34,7 +34,7 @@ VERSION="2.6.2-$(date '+%Y%m%d%H%M')-$(git rev-parse --short HEAD)"
 # Function to create the package directory structure
 create_package_directory() {
   echo "Creating package directory structure..."
-  rm -rf /tmp/openhd-installdir
+  rm -rf /ramdisk/openhd-installdir
   mkdir -p \
     "${PKGDIR}usr/local/bin" \
     "${PKGDIR}tmp" \

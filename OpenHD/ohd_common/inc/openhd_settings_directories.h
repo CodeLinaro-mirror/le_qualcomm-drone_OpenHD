@@ -88,7 +88,7 @@ void clean_all_settings();
 // error, since properly terminating is a nice to have but not necessarily
 // required) 2) When openhd is stopped (SIGTERM) - remove the file
 static std::string get_openhd_is_running_filename() {
-  return "/tmp/openhd_is_running.txt";
+  return "/ramdisk/openhd_is_running.txt";
 }
 
 void check_currently_running_file_and_write();

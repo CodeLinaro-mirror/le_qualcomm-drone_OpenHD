@@ -59,7 +59,7 @@ static nlohmann::json wificards_to_json(const std::vector<WiFiCard> &cards) {
   return j;
 }
 
-static constexpr auto WIFI_MANIFEST_FILENAME = "/tmp/wifi_manifest";
+static constexpr auto WIFI_MANIFEST_FILENAME = "/ramdisk/wifi_manifest";
 
 void write_wificards_manifest(const std::vector<WiFiCard> &cards) {
   auto manifest = wificards_to_json(cards);

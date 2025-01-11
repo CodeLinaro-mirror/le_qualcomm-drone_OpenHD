@@ -51,7 +51,7 @@ class OHDProfile {
   }
 };
 
-// Write as json to /tmp for debugging
+// Write as json to /ramdisk for debugging
 void write_profile_manifest(const OHDProfile &ohdProfile);
 
 namespace DProfile {

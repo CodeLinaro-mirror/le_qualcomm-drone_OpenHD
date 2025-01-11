@@ -30,7 +30,7 @@
 #include "openhd_spdlog_include.h"
 #include "openhd_util_filesystem.h"
 
-static constexpr auto PROFILE_MANIFEST_FILENAME = "/tmp/profile_manifest.txt";
+static constexpr auto PROFILE_MANIFEST_FILENAME = "/ramdisk/profile_manifest.txt";
 
 void write_profile_manifest(const OHDProfile& ohdProfile) {
   std::stringstream ss;
