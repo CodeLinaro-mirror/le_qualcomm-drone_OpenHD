@@ -41,7 +41,7 @@ void openhd::set_config_file(const std::string& config_file_path) {
 static openhd::Config load_or_default() {
 m_console = openhd::log::create_or_get("config");
 assert(m_console);
-  m_console->debug("DEBUG !!!!!!!!!!!!");
+  m_console->warn("DEBUG !!!!!!!!!!!!");
   try {
     openhd::Config ret{};
     if (!OHDFilesystemUtil::exists(CONFIG_FILE_PATH)) {
