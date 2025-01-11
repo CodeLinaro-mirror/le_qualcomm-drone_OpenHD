@@ -310,13 +310,13 @@ void SerialEndpoint::receive_data_until_error() {
               MIN_DELAY_BETWEEN_SERIAL_READ_FAILED_LOG_MESSAGES &&
           m_options.enable_reading) {
         m_last_log_serial_read_failed = std::chrono::steady_clock::now();
-        m_console->warn("{} failed reads - FC connected ?", m_n_failed_reads);
+        m_console->debug("{} failed reads - FC connected ?", m_n_failed_reads);
       } else {
         // m_console->debug("poll probably timeout {}",m_n_failed_reads);
       }
       continue;
     } else if (pollrc == -1) {
-      m_console->warn("read poll failure: {}", GET_ERROR());
+      m_console->debug("read poll failure: {}", GET_ERROR());
       // The UART most likely disconnected.
       return;
     }
