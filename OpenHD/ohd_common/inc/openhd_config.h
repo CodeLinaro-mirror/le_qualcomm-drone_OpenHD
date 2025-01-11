@@ -30,11 +30,11 @@
 namespace openhd {
 
 static constexpr auto RPI_ETHERNET_ONLY = "RPI_ETHERNET_ONLY";
+std::shared_ptr<spdlog::logger> m_console;
 
 // NOTE: Read the .config - file itself for documentation on what these
 // variables do
 struct Config {
-  std::shared_ptr<spdlog::logger> m_console;
   // WIFI
   bool WIFI_ENABLE_AUTODETECT = true;
   std::vector<std::string> WIFI_WB_LINK_CARDS{};
