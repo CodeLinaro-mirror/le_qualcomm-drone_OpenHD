@@ -106,23 +106,38 @@ std::shared_ptr<spdlog::logger> openhd::log::create_or_get(
     const std::string& logger_name) {
   static std::mutex logger_mutex2{};
   std::lock_guard<std::mutex> guard(logger_mutex2);
+  
   auto ret = spdlog::get(logger_name);
   if (ret == nullptr) {
-    auto created = spdlog::stdout_color_mt(logger_name);
-    assert(created);
-    created->set_level(spdlog::level::warn);
-    // Add the sink that sends out warning or higher via UDP
-    // created->sinks().push_back(std::make_shared<openhd::log::sink::UdpTelemetrySink>());
+    // Create console sink (set to 'warn' level)
+    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::warn);
+    
+    // Create file sink for /ramdisk/openhd.log (set to 'debug' level)
+    auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+        "/ramdisk/openhd.log", 1024 * 1024 * 50, 3);  // Max size 50MB, 3 backups
+    file_sink->set_level(spdlog::level::debug);
+
+    // Combine sinks into a logger
+    auto created = std::make_shared<spdlog::logger>(
+        logger_name, spdlog::sinks_init_list{console_sink, file_sink});
+    
+    // Register and configure the logger
+    spdlog::register_logger(created);
+
+    // Set the global log level for the logger (affects all sinks unless overridden)
+    created->set_level(spdlog::level::debug);
+
+    // Add custom telemetry sink (inherits the logger's log level)
     created->sinks().push_back(
         std::make_shared<openhd::log::sink::MavlinkTelemetrySink>());
-    // This is for debugging for "where a fmt exception occurred"
-    // spdlog::set_error_handler([](const std::string &msg) {
-    //  std::cerr<<msg<<"\n;";
-    //});
+
     return created;
   }
+  
   return ret;
 }
+
 
 std::shared_ptr<spdlog::logger> openhd::log::get_default() {
   return create_or_get("default");

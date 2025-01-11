@@ -51,10 +51,14 @@ std::string exec(const std::string& cmd) {
 
 // Helper function to check if a Microhard device is present
 bool is_microhard_device_present() {
-  if (!OHDFilesystemUtil::exists(std::string(getConfigBasePath()) +
-                                 "wfb.txt") &&
-      !OHDFilesystemUtil::exists(std::string(getConfigBasePath()) +
-                                 "ethernet.txt")) {
+  // Check if 'microhard.txt' exists
+  if (OHDFilesystemUtil::exists(std::string(getConfigBasePath()) + "microhard.txt")) {
+    return true;
+  }
+  // Check if 'wfb.txt' and 'ethernet.txt' do not exist
+  if (!OHDFilesystemUtil::exists(std::string(getConfigBasePath()) + "wfb.txt") &&
+      !OHDFilesystemUtil::exists(std::string(getConfigBasePath()) + "ethernet.txt")) {
+    // Execute 'lsusb' command and check for "Microhard" in the output
     std::string output = exec("lsusb");
     return output.find("Microhard") != std::string::npos;
   }
@@ -98,7 +102,7 @@ OHDInterface::OHDInterface(OHDProfile profile1)
   if (m_monitor_mode_cards.empty()) {
     m_console->warn(
         "Cannot start ohd_interface, no wifi card for monitor mode");
-    const std::string message_for_user = "No WiFi card found, please reboot";
+    const std::string message_for_user = "No WiFi card found, please check connection and reboot!";
     m_console->warn(message_for_user);
     openhd::LEDManager::instance().set_status_error();
     // TODO reason what to do. We do not support dynamically adding wifi cards

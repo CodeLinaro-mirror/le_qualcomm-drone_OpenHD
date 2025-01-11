@@ -100,7 +100,7 @@ WifiHotspot::WifiHotspot(OHDProfile profile, WiFiCard wifiCard,
 WifiHotspot::~WifiHotspot() { util_delete_nm_file(); }
 
 void WifiHotspot::start() {
-  m_console->debug("Starting WIFI hotspot on card {}", m_wifi_card.device_name);
+  m_console->warn("Starting WIFI hotspot on card {}", m_wifi_card.device_name);
   const auto args =
       std::vector<std::string>{"con", "up", OHD_WIFI_HOTSPOT_CONNECTION_NAME};
   OHDUtil::run_command("nmcli", args);
@@ -111,7 +111,7 @@ void WifiHotspot::start() {
 }
 
 void WifiHotspot::stop() {
-  m_console->debug("Stopping wifi hotspot on card {}", m_wifi_card.device_name);
+  m_console->warn("Stopping wifi hotspot on card {}", m_wifi_card.device_name);
   if (!started) return;
   const auto args =
       std::vector<std::string>{"con", "down", OHD_WIFI_HOTSPOT_CONNECTION_NAME};
