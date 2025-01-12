@@ -29,6 +29,10 @@
 #include "openhd_util.h"
 #include "openhd_util_filesystem.h"
 
+namespace openhd {
+    std::shared_ptr<spdlog::logger> m_console;
+}
+
 static std::string CONFIG_FILE_PATH =
     std::string(getConfigBasePath()) + "hardware.config";
 
