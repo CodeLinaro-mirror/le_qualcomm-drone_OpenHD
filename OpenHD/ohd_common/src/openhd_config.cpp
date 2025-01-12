@@ -43,17 +43,15 @@ void openhd::set_config_file(const std::string& config_file_path) {
 }
 
 static openhd::Config load_or_default() {
-      openhd::m_console = openhd::log::create_or_get("wifi_hs");
-      openhd::m_console->warn("Creating LOGGING instance");
+  openhd::m_console = openhd::log::create_or_get("openhd_config");
+  openhd::m_console->warn("Creating LOGGING instance");
   try {
     openhd::Config ret{};
     if (!OHDFilesystemUtil::exists(CONFIG_FILE_PATH)) {
-      std::cerr << "WARN: No config file [" << CONFIG_FILE_PATH << "] used!"
-                << std::endl;
+      openhd::m_console->warn("No config file [{}] used!", CONFIG_FILE_PATH);
       return ret;
     } else {
-      std::cout << "WARN: Advanced config file [" << CONFIG_FILE_PATH
-                << "] used!" << std::endl;
+      openhd::m_console->warn("Advanced config file [{}] used!", CONFIG_FILE_PATH);
     }
     inih::INIReader r{CONFIG_FILE_PATH};
 
@@ -84,53 +82,44 @@ static openhd::Config load_or_default() {
         r.Get<bool>("network", "NW_FORWARD_TO_LOCALHOST_58XX", false);
 
     // Parse Ethernet link configuration
-    std::cout << "WARN: Parsing Ethernet link configuration" << std::endl;
+    openhd::m_console->warn("Parsing Ethernet link configuration");
     ret.GROUND_UNIT_IP = r.Get<std::string>("ethernet", "GROUND_UNIT_IP", "");
-    std::cout << "DEBUG: GROUND_UNIT_IP: " << ret.GROUND_UNIT_IP << std::endl;
+    openhd::m_console->debug("GROUND_UNIT_IP: {}", ret.GROUND_UNIT_IP);
     ret.AIR_UNIT_IP = r.Get<std::string>("ethernet", "AIR_UNIT_IP", "");
-    std::cout << "DEBUG: AIR_UNIT_IP: " << ret.AIR_UNIT_IP << std::endl;
+    openhd::m_console->debug("AIR_UNIT_IP: {}", ret.AIR_UNIT_IP);
     ret.VIDEO_PORT = r.Get<int>("ethernet", "VIDEO_PORT", 5000);
-    std::cout << "DEBUG: VIDEO_PORT: " << ret.VIDEO_PORT << std::endl;
+    openhd::m_console->debug("VIDEO_PORT: {}", ret.VIDEO_PORT);
     ret.TELEMETRY_PORT = r.Get<int>("ethernet", "TELEMETRY_PORT", 5600);
-    std::cout << "DEBUG: TELEMETRY_PORT: " << ret.TELEMETRY_PORT << std::endl;
+    openhd::m_console->debug("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Ethernet link Microhard configuration
-    std::cout << "WARN: Parsing Ethernet link Microhard configuration"
-              << std::endl;
+    openhd::m_console->warn("Parsing Ethernet link Microhard configuration");
     ret.DISABLE_MICROHARD_DETECTION =
         r.Get<bool>("microhard", "DISABLE_MICROHARD_DETECTION", false);
-    std::cout << "DEBUG: DISABLE_MICROHARD_DETECTION: "
-              << ret.DISABLE_MICROHARD_DETECTION << std::endl;
+    openhd::m_console->debug("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
     ret.FORCE_MICROHARD = r.Get<bool>("microhard", "FORCE_MICROHARD", false);
-    std::cout << "DEBUG: FORCE_MICROHARD: " << ret.FORCE_MICROHARD << std::endl;
+    openhd::m_console->debug("FORCE_MICROHARD: {}", ret.FORCE_MICROHARD);
     ret.MICROHARD_USERNAME =
         r.Get<std::string>("microhard", "MICROHARD_USERNAME", "admin");
-    std::cout << "DEBUG: MICROHARD_USERNAME: " << ret.MICROHARD_USERNAME
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_USERNAME: {}", ret.MICROHARD_USERNAME);
     ret.MICROHARD_PASSWORD =
         r.Get<std::string>("microhard", "MICROHARD_PASSWORD", "qwertz1");
-    std::cout << "DEBUG: MICROHARD_PASSWORD: " << ret.MICROHARD_PASSWORD
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_PASSWORD: {}", ret.MICROHARD_PASSWORD);
     ret.MICROHARD_IP_AIR =
         r.Get<std::string>("microhard", "MICROHARD_IP_AIR", "");
-    std::cout << "DEBUG: MICROHARD_IP_AIR: " << ret.MICROHARD_IP_AIR
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_IP_AIR: {}", ret.MICROHARD_IP_AIR);
     ret.MICROHARD_IP_GROUND =
         r.Get<std::string>("microhard", "MICROHARD_IP_GROUND", "");
-    std::cout << "DEBUG: MICROHARD_IP_GROUND: " << ret.MICROHARD_IP_GROUND
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_IP_GROUND: {}", ret.MICROHARD_IP_GROUND);
     ret.MICROHARD_IP_RANGE =
         r.Get<std::string>("microhard", "MICROHARD_IP_RANGE", "192.168.168");
-    std::cout << "DEBUG: MICROHARD_IP_RANGE: " << ret.MICROHARD_IP_RANGE
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_IP_RANGE: {}", ret.MICROHARD_IP_RANGE);
     ret.MICROHARD_VIDEO_PORT =
         r.Get<int>("microhard", "MICROHARD_VIDEO_PORT", 5910);
-    std::cout << "DEBUG: MICROHARD_VIDEO_PORT: " << ret.MICROHARD_VIDEO_PORT
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
     ret.TELEMETRY_PORT =
         r.Get<int>("microhard", "MICROHARD_TELEMETRY_PORT", 5920);
-    std::cout << "DEBUG: MICROHARD_TELEMETRY_PORT: " << ret.TELEMETRY_PORT
-              << std::endl;
+    openhd::m_console->debug("MICROHARD_TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Generic configuration
     ret.GEN_ENABLE_LAST_KNOWN_POSITION =
@@ -141,8 +130,7 @@ static openhd::Config load_or_default() {
 
     return ret;
   } catch (std::exception& exception) {
-    std::cerr << "ERROR: Ill-formatted config file: " << exception.what()
-              << std::endl;
+    openhd::m_console->error("Ill-formatted config file: {}", exception.what());
   }
   return {};
 }
