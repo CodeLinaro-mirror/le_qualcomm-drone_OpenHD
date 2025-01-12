@@ -20,9 +20,8 @@
  *
  * © OpenHD, All Rights Reserved.
  ******************************************************************************/
-
-#ifndef OPENHD_CONFIG_H_
-#define OPENHD_CONFIG_H_
+#ifndef OPENHD_OPENHD_OHD_COMMON_INC_OPENHD_CONFIG_H_
+#define OPENHD_OPENHD_OHD_COMMON_INC_OPENHD_CONFIG_H_
 
 #include <string>
 #include <vector>
