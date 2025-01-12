@@ -84,42 +84,42 @@ static openhd::Config load_or_default() {
     // Parse Ethernet link configuration
     openhd::m_console->warn("Parsing Ethernet link configuration");
     ret.GROUND_UNIT_IP = r.Get<std::string>("ethernet", "GROUND_UNIT_IP", "");
-    openhd::m_console->debug("GROUND_UNIT_IP: {}", ret.GROUND_UNIT_IP);
+    openhd::m_console->warn("GROUND_UNIT_IP: {}", ret.GROUND_UNIT_IP);
     ret.AIR_UNIT_IP = r.Get<std::string>("ethernet", "AIR_UNIT_IP", "");
-    openhd::m_console->debug("AIR_UNIT_IP: {}", ret.AIR_UNIT_IP);
+    openhd::m_console->warn("AIR_UNIT_IP: {}", ret.AIR_UNIT_IP);
     ret.VIDEO_PORT = r.Get<int>("ethernet", "VIDEO_PORT", 5000);
-    openhd::m_console->debug("VIDEO_PORT: {}", ret.VIDEO_PORT);
+    openhd::m_console->warn("VIDEO_PORT: {}", ret.VIDEO_PORT);
     ret.TELEMETRY_PORT = r.Get<int>("ethernet", "TELEMETRY_PORT", 5600);
-    openhd::m_console->debug("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
+    openhd::m_console->warn("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Ethernet link Microhard configuration
     openhd::m_console->warn("Parsing Ethernet link Microhard configuration");
     ret.DISABLE_MICROHARD_DETECTION =
         r.Get<bool>("microhard", "DISABLE_MICROHARD_DETECTION", false);
-    openhd::m_console->debug("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
+    openhd::m_console->warn("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
     ret.FORCE_MICROHARD = r.Get<bool>("microhard", "FORCE_MICROHARD", false);
-    openhd::m_console->debug("FORCE_MICROHARD: {}", ret.FORCE_MICROHARD);
+    openhd::m_console->warn("FORCE_MICROHARD: {}", ret.FORCE_MICROHARD);
     ret.MICROHARD_USERNAME =
         r.Get<std::string>("microhard", "MICROHARD_USERNAME", "admin");
-    openhd::m_console->debug("MICROHARD_USERNAME: {}", ret.MICROHARD_USERNAME);
+    openhd::m_console->warn("MICROHARD_USERNAME: {}", ret.MICROHARD_USERNAME);
     ret.MICROHARD_PASSWORD =
         r.Get<std::string>("microhard", "MICROHARD_PASSWORD", "qwertz1");
-    openhd::m_console->debug("MICROHARD_PASSWORD: {}", ret.MICROHARD_PASSWORD);
+    openhd::m_console->warn("MICROHARD_PASSWORD: {}", ret.MICROHARD_PASSWORD);
     ret.MICROHARD_IP_AIR =
         r.Get<std::string>("microhard", "MICROHARD_IP_AIR", "");
-    openhd::m_console->debug("MICROHARD_IP_AIR: {}", ret.MICROHARD_IP_AIR);
+    openhd::m_console->warn("MICROHARD_IP_AIR: {}", ret.MICROHARD_IP_AIR);
     ret.MICROHARD_IP_GROUND =
         r.Get<std::string>("microhard", "MICROHARD_IP_GROUND", "");
-    openhd::m_console->debug("MICROHARD_IP_GROUND: {}", ret.MICROHARD_IP_GROUND);
+    openhd::m_console->warn("MICROHARD_IP_GROUND: {}", ret.MICROHARD_IP_GROUND);
     ret.MICROHARD_IP_RANGE =
         r.Get<std::string>("microhard", "MICROHARD_IP_RANGE", "192.168.168");
-    openhd::m_console->debug("MICROHARD_IP_RANGE: {}", ret.MICROHARD_IP_RANGE);
+    openhd::m_console->warn("MICROHARD_IP_RANGE: {}", ret.MICROHARD_IP_RANGE);
     ret.MICROHARD_VIDEO_PORT =
         r.Get<int>("microhard", "MICROHARD_VIDEO_PORT", 5910);
-    openhd::m_console->debug("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
+    openhd::m_console->warn("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
     ret.TELEMETRY_PORT =
         r.Get<int>("microhard", "MICROHARD_TELEMETRY_PORT", 5920);
-    openhd::m_console->debug("MICROHARD_TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
+    openhd::m_console->warn("MICROHARD_TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Generic configuration
     ret.GEN_ENABLE_LAST_KNOWN_POSITION =
@@ -141,8 +141,7 @@ openhd::Config openhd::load_config() {
 }
 
 void openhd::debug_config(const openhd::Config& config) {
-  std::cout << "DEBUG: WIFI_ENABLE_AUTODETECT: "
-            << config.WIFI_ENABLE_AUTODETECT << std::endl;
+  openhd::m_console->debug("WIFI_ENABLE_AUTODETECT: {}", config.WIFI_ENABLE_AUTODETECT);
 }
 
 void openhd::debug_config() {
