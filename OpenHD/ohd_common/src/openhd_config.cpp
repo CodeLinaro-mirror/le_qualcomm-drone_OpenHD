@@ -28,8 +28,7 @@
 #include "openhd_spdlog.h"
 #include "openhd_util.h"
 #include "openhd_util_filesystem.h"
-#include <exception>
-#include <string>
+#include <sstream> // For std::ostringstream
 
 // Initialize logger
 static auto logger = openhd::log::create_or_get("config_manager");
@@ -40,6 +39,19 @@ static std::string CONFIG_FILE_PATH =
 void openhd::set_config_file(const std::string& config_file_path) {
   logger->debug("Using custom config file path [{}]", config_file_path);
   CONFIG_FILE_PATH = config_file_path;
+}
+
+static std::string join_vector(const std::vector<std::string>& vec) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < vec.size(); ++i) {
+    oss << vec[i];
+    if (i < vec.size() - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
 }
 
 static openhd::Config load_or_default() {
@@ -72,7 +84,9 @@ static openhd::Config load_or_default() {
         r.Get<std::string>("wifi", "WIFI_LOCAL_NETWORK_PASSWORD", "");
 
     // Log parsed WiFi configuration
-    logger->debug("Parsed WiFi configuration: {}", ret.WIFI_WIFI_HOTSPOT_CARD);
+    logger->debug("WIFI_ENABLE_AUTODETECT: {}", ret.WIFI_ENABLE_AUTODETECT);
+    logger->debug("WIFI_WB_LINK_CARDS: {}", join_vector(ret.WIFI_WB_LINK_CARDS));
+    logger->debug("WIFI_WIFI_HOTSPOT_CARD: {}", ret.WIFI_WIFI_HOTSPOT_CARD);
 
     // Parse Network configuration
     ret.NW_ETHERNET_CARD =
@@ -81,6 +95,9 @@ static openhd::Config load_or_default() {
         r.GetVector<std::string>("network", "NW_MANUAL_FORWARDING_IPS");
     ret.NW_FORWARD_TO_LOCALHOST_58XX =
         r.Get<bool>("network", "NW_FORWARD_TO_LOCALHOST_58XX", false);
+
+    logger->debug("NW_ETHERNET_CARD: {}", ret.NW_ETHERNET_CARD);
+    logger->debug("NW_MANUAL_FORWARDING_IPS: {}", join_vector(ret.NW_MANUAL_FORWARDING_IPS));
 
     // Parse Ethernet link configuration
     logger->info("Parsing Ethernet link configuration");
@@ -93,8 +110,8 @@ static openhd::Config load_or_default() {
     ret.TELEMETRY_PORT = r.Get<int>("ethernet", "TELEMETRY_PORT", 5600);
     logger->debug("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
-    // Parse Ethernet link Microhard configuration
-    logger->info("Parsing Ethernet link Microhard configuration");
+    // Parse Microhard Ethernet link configuration
+    logger->info("Parsing Microhard Ethernet link configuration");
     ret.DISABLE_MICROHARD_DETECTION =
         r.Get<bool>("microhard", "DISABLE_MICROHARD_DETECTION", false);
     logger->debug("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
@@ -118,16 +135,20 @@ static openhd::Config load_or_default() {
     ret.MICROHARD_VIDEO_PORT =
         r.Get<int>("microhard", "MICROHARD_VIDEO_PORT", 5910);
     logger->debug("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
-    ret.TELEMETRY_PORT =
+    ret.MICROHARD_TELEMETRY_PORT =
         r.Get<int>("microhard", "MICROHARD_TELEMETRY_PORT", 5920);
-    logger->debug("MICROHARD_TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
+    logger->debug("MICROHARD_TELEMETRY_PORT: {}", ret.MICROHARD_TELEMETRY_PORT);
 
-    // Parse Generic configuration
+    // Parse General configuration
+    logger->info("Parsing General configuration");
     ret.GEN_ENABLE_LAST_KNOWN_POSITION =
         r.Get<bool>("generic", "GEN_ENABLE_LAST_KNOWN_POSITION", false);
+    logger->debug("GEN_ENABLE_LAST_KNOWN_POSITION: {}", ret.GEN_ENABLE_LAST_KNOWN_POSITION);
     ret.GEN_RF_METRICS_LEVEL = r.Get<int>("generic", "GEN_RF_METRICS_LEVEL", 0);
+    logger->debug("GEN_RF_METRICS_LEVEL: {}", ret.GEN_RF_METRICS_LEVEL);
     ret.GEN_NO_QOPENHD_AUTOSTART =
         r.Get<bool>("generic", "GEN_NO_QOPENHD_AUTOSTART", false);
+    logger->debug("GEN_NO_QOPENHD_AUTOSTART: {}", ret.GEN_NO_QOPENHD_AUTOSTART);
 
     return ret;
   } catch (std::exception& exception) {
@@ -142,11 +163,13 @@ openhd::Config openhd::load_config() {
 }
 
 void openhd::debug_config(const openhd::Config& config) {
+  logger->debug("Debugging configuration...");
   logger->debug("WIFI_ENABLE_AUTODETECT: {}", config.WIFI_ENABLE_AUTODETECT);
-  logger->debug("WIFI_WB_LINK_CARDS: {}", config.WIFI_WB_LINK_CARDS);
+  logger->debug("WIFI_WB_LINK_CARDS: {}", join_vector(config.WIFI_WB_LINK_CARDS));
   logger->debug("WIFI_WIFI_HOTSPOT_CARD: {}", config.WIFI_WIFI_HOTSPOT_CARD);
-  logger->debug("WIFI_LOCAL_NETWORK_SSID: {}", config.WIFI_LOCAL_NETWORK_SSID);
-  logger->debug("WIFI_LOCAL_NETWORK_PASSWORD: {}", config.WIFI_LOCAL_NETWORK_PASSWORD);
+  logger->debug("NW_ETHERNET_CARD: {}", config.NW_ETHERNET_CARD);
+  logger->debug("GROUND_UNIT_IP: {}", config.GROUND_UNIT_IP);
+  logger->debug("AIR_UNIT_IP: {}", config.AIR_UNIT_IP);
 }
 
 void openhd::debug_config() {
