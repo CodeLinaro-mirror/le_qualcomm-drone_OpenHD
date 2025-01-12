@@ -37,7 +37,7 @@ static std::string CONFIG_FILE_PATH =
     std::string(getConfigBasePath()) + "hardware.config";
 
 void openhd::set_config_file(const std::string& config_file_path) {
-  logger->debug("Using custom config file path [{}]", config_file_path);
+  logger->warn("Using custom config file path [{}]", config_file_path);
   CONFIG_FILE_PATH = config_file_path;
 }
 
@@ -61,7 +61,7 @@ static openhd::Config load_or_default() {
       logger->warn("No config file [{}] found, using defaults", CONFIG_FILE_PATH);
       return ret;
     } else {
-      logger->info("Using advanced config file [{}]", CONFIG_FILE_PATH);
+      logger->warn("Using advanced config file [{}]", CONFIG_FILE_PATH);
     }
     inih::INIReader r{CONFIG_FILE_PATH};
 
@@ -84,9 +84,9 @@ static openhd::Config load_or_default() {
         r.Get<std::string>("wifi", "WIFI_LOCAL_NETWORK_PASSWORD", "");
 
     // Log parsed WiFi configuration
-    logger->debug("WIFI_ENABLE_AUTODETECT: {}", ret.WIFI_ENABLE_AUTODETECT);
-    logger->debug("WIFI_WB_LINK_CARDS: {}", join_vector(ret.WIFI_WB_LINK_CARDS));
-    logger->debug("WIFI_WIFI_HOTSPOT_CARD: {}", ret.WIFI_WIFI_HOTSPOT_CARD);
+    logger->warn("WIFI_ENABLE_AUTODETECT: {}", ret.WIFI_ENABLE_AUTODETECT);
+    logger->warn("WIFI_WB_LINK_CARDS: {}", join_vector(ret.WIFI_WB_LINK_CARDS));
+    logger->warn("WIFI_WIFI_HOTSPOT_CARD: {}", ret.WIFI_WIFI_HOTSPOT_CARD);
 
     // Parse Network configuration
     ret.NW_ETHERNET_CARD =
@@ -96,59 +96,59 @@ static openhd::Config load_or_default() {
     ret.NW_FORWARD_TO_LOCALHOST_58XX =
         r.Get<bool>("network", "NW_FORWARD_TO_LOCALHOST_58XX", false);
 
-    logger->debug("NW_ETHERNET_CARD: {}", ret.NW_ETHERNET_CARD);
-    logger->debug("NW_MANUAL_FORWARDING_IPS: {}", join_vector(ret.NW_MANUAL_FORWARDING_IPS));
+    logger->warn("NW_ETHERNET_CARD: {}", ret.NW_ETHERNET_CARD);
+    logger->warn("NW_MANUAL_FORWARDING_IPS: {}", join_vector(ret.NW_MANUAL_FORWARDING_IPS));
 
     // Parse Ethernet link configuration
     logger->info("Parsing Ethernet link configuration");
     ret.GROUND_UNIT_IP = r.Get<std::string>("ethernet", "GROUND_UNIT_IP", "");
-    logger->debug("GROUND_UNIT_IP: {}", ret.GROUND_UNIT_IP);
+    logger->warn("GROUND_UNIT_IP: {}", ret.GROUND_UNIT_IP);
     ret.AIR_UNIT_IP = r.Get<std::string>("ethernet", "AIR_UNIT_IP", "");
-    logger->debug("AIR_UNIT_IP: {}", ret.AIR_UNIT_IP);
+    logger->warn("AIR_UNIT_IP: {}", ret.AIR_UNIT_IP);
     ret.VIDEO_PORT = r.Get<int>("ethernet", "VIDEO_PORT", 5000);
-    logger->debug("VIDEO_PORT: {}", ret.VIDEO_PORT);
+    logger->warn("VIDEO_PORT: {}", ret.VIDEO_PORT);
     ret.TELEMETRY_PORT = r.Get<int>("ethernet", "TELEMETRY_PORT", 5600);
-    logger->debug("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
+    logger->warn("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Microhard Ethernet link configuration
     logger->info("Parsing Microhard Ethernet link configuration");
     ret.DISABLE_MICROHARD_DETECTION =
         r.Get<bool>("microhard", "DISABLE_MICROHARD_DETECTION", false);
-    logger->debug("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
+    logger->warn("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
     ret.FORCE_MICROHARD = r.Get<bool>("microhard", "FORCE_MICROHARD", false);
-    logger->debug("FORCE_MICROHARD: {}", ret.FORCE_MICROHARD);
+    logger->warn("FORCE_MICROHARD: {}", ret.FORCE_MICROHARD);
     ret.MICROHARD_USERNAME =
         r.Get<std::string>("microhard", "MICROHARD_USERNAME", "admin");
-    logger->debug("MICROHARD_USERNAME: {}", ret.MICROHARD_USERNAME);
+    logger->warn("MICROHARD_USERNAME: {}", ret.MICROHARD_USERNAME);
     ret.MICROHARD_PASSWORD =
         r.Get<std::string>("microhard", "MICROHARD_PASSWORD", "qwertz1");
-    logger->debug("MICROHARD_PASSWORD: {}", ret.MICROHARD_PASSWORD);
+    logger->warn("MICROHARD_PASSWORD: {}", ret.MICROHARD_PASSWORD);
     ret.MICROHARD_IP_AIR =
         r.Get<std::string>("microhard", "MICROHARD_IP_AIR", "");
-    logger->debug("MICROHARD_IP_AIR: {}", ret.MICROHARD_IP_AIR);
+    logger->warn("MICROHARD_IP_AIR: {}", ret.MICROHARD_IP_AIR);
     ret.MICROHARD_IP_GROUND =
         r.Get<std::string>("microhard", "MICROHARD_IP_GROUND", "");
-    logger->debug("MICROHARD_IP_GROUND: {}", ret.MICROHARD_IP_GROUND);
+    logger->warn("MICROHARD_IP_GROUND: {}", ret.MICROHARD_IP_GROUND);
     ret.MICROHARD_IP_RANGE =
         r.Get<std::string>("microhard", "MICROHARD_IP_RANGE", "192.168.168");
-    logger->debug("MICROHARD_IP_RANGE: {}", ret.MICROHARD_IP_RANGE);
+    logger->warn("MICROHARD_IP_RANGE: {}", ret.MICROHARD_IP_RANGE);
     ret.MICROHARD_VIDEO_PORT =
         r.Get<int>("microhard", "MICROHARD_VIDEO_PORT", 5910);
-    logger->debug("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
+    logger->warn("MICROHARD_VIDEO_PORT: {}", ret.MICROHARD_VIDEO_PORT);
     ret.MICROHARD_TELEMETRY_PORT =
         r.Get<int>("microhard", "MICROHARD_TELEMETRY_PORT", 5920);
-    logger->debug("MICROHARD_TELEMETRY_PORT: {}", ret.MICROHARD_TELEMETRY_PORT);
+    logger->warn("MICROHARD_TELEMETRY_PORT: {}", ret.MICROHARD_TELEMETRY_PORT);
 
     // Parse General configuration
     logger->info("Parsing General configuration");
     ret.GEN_ENABLE_LAST_KNOWN_POSITION =
         r.Get<bool>("generic", "GEN_ENABLE_LAST_KNOWN_POSITION", false);
-    logger->debug("GEN_ENABLE_LAST_KNOWN_POSITION: {}", ret.GEN_ENABLE_LAST_KNOWN_POSITION);
+    logger->warn("GEN_ENABLE_LAST_KNOWN_POSITION: {}", ret.GEN_ENABLE_LAST_KNOWN_POSITION);
     ret.GEN_RF_METRICS_LEVEL = r.Get<int>("generic", "GEN_RF_METRICS_LEVEL", 0);
-    logger->debug("GEN_RF_METRICS_LEVEL: {}", ret.GEN_RF_METRICS_LEVEL);
+    logger->warn("GEN_RF_METRICS_LEVEL: {}", ret.GEN_RF_METRICS_LEVEL);
     ret.GEN_NO_QOPENHD_AUTOSTART =
         r.Get<bool>("generic", "GEN_NO_QOPENHD_AUTOSTART", false);
-    logger->debug("GEN_NO_QOPENHD_AUTOSTART: {}", ret.GEN_NO_QOPENHD_AUTOSTART);
+    logger->warn("GEN_NO_QOPENHD_AUTOSTART: {}", ret.GEN_NO_QOPENHD_AUTOSTART);
 
     return ret;
   } catch (std::exception& exception) {
@@ -162,19 +162,19 @@ openhd::Config openhd::load_config() {
   return config;
 }
 
-void openhd::debug_config(const openhd::Config& config) {
-  logger->debug("Debugging configuration...");
-  logger->debug("WIFI_ENABLE_AUTODETECT: {}", config.WIFI_ENABLE_AUTODETECT);
-  logger->debug("WIFI_WB_LINK_CARDS: {}", join_vector(config.WIFI_WB_LINK_CARDS));
-  logger->debug("WIFI_WIFI_HOTSPOT_CARD: {}", config.WIFI_WIFI_HOTSPOT_CARD);
-  logger->debug("NW_ETHERNET_CARD: {}", config.NW_ETHERNET_CARD);
-  logger->debug("GROUND_UNIT_IP: {}", config.GROUND_UNIT_IP);
-  logger->debug("AIR_UNIT_IP: {}", config.AIR_UNIT_IP);
+void openhd::warn_config(const openhd::Config& config) {
+  logger->warn("Debugging configuration...");
+  logger->warn("WIFI_ENABLE_AUTODETECT: {}", config.WIFI_ENABLE_AUTODETECT);
+  logger->warn("WIFI_WB_LINK_CARDS: {}", join_vector(config.WIFI_WB_LINK_CARDS));
+  logger->warn("WIFI_WIFI_HOTSPOT_CARD: {}", config.WIFI_WIFI_HOTSPOT_CARD);
+  logger->warn("NW_ETHERNET_CARD: {}", config.NW_ETHERNET_CARD);
+  logger->warn("GROUND_UNIT_IP: {}", config.GROUND_UNIT_IP);
+  logger->warn("AIR_UNIT_IP: {}", config.AIR_UNIT_IP);
 }
 
-void openhd::debug_config() {
+void openhd::warn_config() {
   auto config = load_config();
-  debug_config(config);
+  warn_config(config);
 }
 
 bool openhd::nw_ethernet_card_manual_active(const openhd::Config& config) {
