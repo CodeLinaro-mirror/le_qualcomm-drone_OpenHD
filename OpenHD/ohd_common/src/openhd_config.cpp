@@ -39,6 +39,7 @@ void openhd::set_config_file(const std::string& config_file_path) {
 }
 
 static openhd::Config load_or_default() {
+      m_console = openhd::log::create_or_get("wifi_hs");
   try {
     openhd::Config ret{};
     if (!OHDFilesystemUtil::exists(CONFIG_FILE_PATH)) {
