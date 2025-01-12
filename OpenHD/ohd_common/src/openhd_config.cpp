@@ -90,7 +90,7 @@ static openhd::Config load_or_default() {
     openhd::m_console->debug("TELEMETRY_PORT: {}", ret.TELEMETRY_PORT);
 
     // Parse Ethernet link Microhard configuration
-    openhd::m_console->warn("Parsing Ethernet link Microhard configuration");
+    openhd::m_console->debug("Parsing Ethernet link Microhard configuration");
     ret.DISABLE_MICROHARD_DETECTION =
         r.Get<bool>("microhard", "DISABLE_MICROHARD_DETECTION", false);
     openhd::m_console->debug("DISABLE_MICROHARD_DETECTION: {}", ret.DISABLE_MICROHARD_DETECTION);
