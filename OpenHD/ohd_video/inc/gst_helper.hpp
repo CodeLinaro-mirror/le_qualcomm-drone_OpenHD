@@ -539,28 +539,28 @@ static std::string createRockchipEncoderPipeline(
     ss << " mpph265enc";
   }
 
-  ss << " rc-mode=1";
-  ss << " bps=" << bps_actual;
-  ss << " bps-max=" << bps_max;
-  ss << " bps-min=" << bps_min;
-  ss << " qp-min=" << settings.qp_min;
-  ss << " qp-max=" << settings.qp_max;
+  // ss << " rc-mode=1";
+  // ss << " bps=" << bps_actual;
+  // ss << " bps-max=" << bps_max;
+  // ss << " bps-min=" << bps_min;
+  // ss << " qp-min=" << settings.qp_min;
+  // ss << " qp-max=" << settings.qp_max;
   // ss << " width=" << settings.streamed_video_format.width;
   // ss << " height=" << settings.streamed_video_format.height;
 
-  if (openhd::validate_camera_rotation(settings.camera_rotation_degree)) {
-    ss << " rotation=" << settings.camera_rotation_degree;
-  }
+  // if (openhd::validate_camera_rotation(settings.camera_rotation_degree)) {
+  //   ss << " rotation=" << settings.camera_rotation_degree;
+  // }
 
-  ss << " gop=5";
+  // ss << " gop=5";
 
-  if (h264_needs_level_4_2(settings.streamed_video_format,
-                           settings.h26x_bitrate_kbits)) {
-    ss << " level=42";
-  }
+  // if (h264_needs_level_4_2(settings.streamed_video_format,
+  //                          settings.h26x_bitrate_kbits)) {
+  //   ss << " level=42";
+  // }
 
-  const int rotation = get_rotation_degree_0_90_180_270(settings);
-  ss << " rotation=" << rotation;
+  // const int rotation = get_rotation_degree_0_90_180_270(settings);
+  // ss << " rotation=" << rotation;
 
   ss << " ! ";
   return ss.str();
