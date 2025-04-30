@@ -147,6 +147,12 @@ std::string GstAudioStream::create_pipeline() {
 void GstAudioStream::stream_once() {
 
   m_console->debug("GstAudioStream::stream_once");
+
+  if (g_airCameraGenericSettings.enable_audio == 0)
+  {
+    m_console->debug("Audio disabled, not starting pipeline");
+    return;
+  }
   auto pipeline = create_pipeline();
   m_console->debug("Pipeline: [{}]", pipeline);
   GError* error = nullptr;
