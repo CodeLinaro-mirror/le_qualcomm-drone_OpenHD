@@ -187,6 +187,7 @@ static OHDRunOptions parse_run_parameters(int argc, char *argv[]) {
 int main(int argc, char *argv[]) {
   // OpenHD needs to be run as root!
   OHDUtil::terminate_if_not_root();
+  OHDUtil::run_command("systemctl", {"--quiet", "stop", "getty@tty1.service", "> /dev/null 2>&1"});
   if (OHDFilesystemUtil::exists("/run/openhd/hold.pid")) {
       std::exit(0);
   }
@@ -276,6 +277,7 @@ int main(int argc, char *argv[]) {
           !OHDPlatform::instance().is_x20()) {
         if (!profile.is_air) {
           OHDUtil::run_command("systemctl", {"--quiet", "start", "qopenhd", "> /dev/null 2>&1"});
+          OHDUtil::run_command("sh", {"-c", "setterm --clear --reset > /dev/tty1"});
         } else {
           OHDUtil::run_command("systemctl", {"--quiet", "stop", "qopenhd", "> /dev/null 2>&1"});
         }
