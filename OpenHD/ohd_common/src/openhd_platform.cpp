@@ -327,6 +327,10 @@ bool OHDPlatform::is_qcs405() const {
   return platform_type == X_PLATFORM_TYPE_QUALCOMM_QCS405;
 }
 
+bool OHDPlatform::is_uvx_mod() const {
+  return platform_type == X_PLATFORM_TYPE_UVX_MOD;
+}
+
 bool OHDPlatform::is_qrb5165() const {
   return platform_type == X_PLATFORM_TYPE_QUALCOMM_QRB5165;
 }
