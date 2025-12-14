@@ -833,6 +833,10 @@ inline void release_nxp_tracked_encoder_fd() {
   nxp_release_tracked_encoder_fd();
 }
 
+inline bool request_nxp_force_idr() {
+  return nxp_force_idr();
+}
+
 static bool nxp_v4l2_set_cbr_bitrate_kbits(int bitrate_kbits) {
   NxpV4L2ControlSession ctrl(kNxpV4L2EncoderDevice, true);
   if (!ctrl.valid()) return false;
