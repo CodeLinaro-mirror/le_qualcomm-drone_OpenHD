@@ -55,7 +55,6 @@ class GStreamerStream : public CameraStream {
   ~GStreamerStream();
   void start_looping() override;
   void terminate_looping() override;
-  void request_keyframe() override;
 
  private:
   // Creates a valid gstreamer pipeline for the given camera,

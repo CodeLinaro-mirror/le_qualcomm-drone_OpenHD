@@ -26,12 +26,10 @@
 
 #include <gst/gst.h>
 
-#include <functional>
 #include <optional>
 
 #include "openhd_spdlog.h"
 #include "openhd_spdlog_include.h"
-#include "gst_helper.hpp"
 
 // #define EXPERIMENTAL_USE_OPENH264_ENCODER
 
@@ -45,10 +43,6 @@ struct GstBitrateControlElement {
   GstElement* encoder;
   // Not all encoders / elements call the bitrate property "bitrate"
   std::string property_name = "bitrate";
-  // Optional handler for backends that don't expose a GStreamer property
-  std::function<bool(int)> set_bitrate_kbits;
-  // Optional cleanup for custom handlers
-  std::function<void()> cleanup;
 };
 
 static std::optional<GstBitrateControlElement>
@@ -76,26 +70,12 @@ get_dynamic_bitrate_control_element_in_pipeline(
     ret.encoder = gst_bin_get_by_name(GST_BIN(gst_pipeline), "sunxisrc");
     ret.property_name = "bitrate";
     ret.takes_kbit = true;
-  } else if (camera.requires_nxp_imx8_v4l2_pipeline()) {
-    ret.encoder = nullptr;
-    ret.property_name = "bitrate";
-    ret.takes_kbit = false;
-    ret.set_bitrate_kbits = [](int bitrate_kbits) {
-      return OHDGstHelper::nxp_v4l2_set_cbr_bitrate_kbits(bitrate_kbits);
-    };
-    ret.cleanup = []() { OHDGstHelper::release_nxp_tracked_encoder_fd(); };
   }
-  if (ret.encoder == nullptr && !ret.set_bitrate_kbits) {
+  if (ret.encoder == nullptr) {
     openhd::log::get_default()->debug(
         "Cannot find dynamic bitrate control element for camera {}",
         camera.cam_type_as_verbose_string());
     return std::nullopt;
-  }
-  if (ret.set_bitrate_kbits) {
-    openhd::log::get_default()->info(
-        "Using V4L2 bitrate control for camera {}",
-        camera.cam_type_as_verbose_string());
-    return ret;
   }
   // try fetching the value for testing if it actually works
   gint actual_bits_per_second = -1;
@@ -114,9 +94,6 @@ get_dynamic_bitrate_control_element_in_pipeline(
 
 static bool change_bitrate(const GstBitrateControlElement& ctrl_el,
                            int bitrate_kbits) {
-  if (ctrl_el.set_bitrate_kbits) {
-    return ctrl_el.set_bitrate_kbits(bitrate_kbits);
-  }
   const auto bitrate = ctrl_el.takes_kbit
                            ? bitrate_kbits
                            : openhd::kbits_to_bits_per_second(bitrate_kbits);
@@ -136,9 +113,6 @@ static bool change_bitrate(const GstBitrateControlElement& ctrl_el,
 }
 
 static void unref_bitrate_element(GstBitrateControlElement& element) {
-  if (element.cleanup) {
-    element.cleanup();
-  }
   if (element.encoder) {
     openhd::log::get_default()->debug("Unref bitrate control element begin");
     gst_object_unref(element.encoder);
